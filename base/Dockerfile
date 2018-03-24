@@ -31,17 +31,17 @@ wget
 
 #  ***  Install custom boost version  ***
 WORKDIR /tmp
-ENV BOOST_ROOT /bts/boost_1_58_0
+ENV BOOST_ROOT /bts/boost_1_60_0
 
 ## Dowload
-RUN wget -c http://sourceforge.net/projects/boost/files/boost/1.58.0/boost_1_58_0.tar.bz2/download \
--O boost_1_58_0.tar.bz2
+RUN wget -c http://sourceforge.net/projects/boost/files/boost/1.60.0/boost_1_60_0.tar.bz2/download \
+-O boost_1_60_0.tar.bz2
 
 ## Extract
-RUN tar xjf boost_1_58_0.tar.bz2
+RUN tar xjf boost_1_60_0.tar.bz2
 
 ## Build
-WORKDIR /tmp/boost_1_58_0
+WORKDIR /tmp/boost_1_60_0
 RUN ./bootstrap.sh "--prefix=$BOOST_ROOT" && ./b2 install
 
 
