@@ -1,0 +1,50 @@
+version: "2"
+volumes:
+ db_data: {}
+ wallet_build: {}
+
+services:
+ cli-wallet:
+  build: cli-wallet
+  ports:
+   - 8092
+   - 8099
+  volumes:
+   - ./cli-wallet/data:/conf/cli-wallet
+
+     # witness:
+     #  build: witness
+
+
+ web-wallet:
+  build: web-wallet
+  ports:
+   - "8080:80"
+  volumes:
+   - wallet_build:/bitshares-ui/build/dist
+
+ db:
+  image: mysql:5.7
+  ports:
+   - 3306
+  volumes:
+   - db_data:/var/lib/mysql
+  restart: always
+  environment:
+   MYSQL_ROOT_PASSWORD:
+   MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+
+ faucet:
+  build: faucet
+  links:
+   - cli-wallet:cli
+   - db
+  depends_on:
+   - cli-wallet
+   - db
+   - web-wallet
+  ports:
+   - 3000:80
+   - 3443:443
+  volumes:
+   - wallet_build:/home/app/faucet/public/wallet
